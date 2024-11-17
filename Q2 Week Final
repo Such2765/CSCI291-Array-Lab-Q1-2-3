@@ -1,1 +1,55 @@
+#include <stdio.h>
 
+int main() {
+    // Initialize variables
+    int initial_balance = 1000;
+    int transactions[] = {200, -150, -500, -400, -50, -200, 300}; 
+    int size = sizeOf(transactions) / sizeOf(transactions[0]); 
+    int tobeprocessed[size]; 
+    int unprocessed_count = 0; 
+    
+    printf("Starting Balance: %d AED\n\n", initial_balance);
+    
+    for (int i = 0; i < size; i++) {
+        int transaction = transactions[i];
+        
+        // Checking whether or not the transaction is a withdrawal and if it exceeds the current balance
+        if (transaction < 0 && -transaction > initial_balance) {
+            printf("Transaction %d (Withdrawal %d AED) is invalid due to insufficient funds.\n", i + 1, -transaction);
+            tobeprocessed[unprocessed_count++] = transaction; // Store invalid transaction
+            continue; // Skip to the next transaction
+        }
+        
+        // Update balance for valid transaction
+        initial_balance += transaction;
+        
+        // Print the details of the valid transaction
+        printf("Transaction %d: %s %d AED, New Balance: %d AED\n", i + 1, transaction > 0 ? "Deposit" : "Withdrawal", abs(transaction), initial_balance);
+        
+        // Check if the balance has reached zero
+        if (initial_balance == 0) {
+            printf("\nBalance has reached zero. No further transactions will be processed.\n");
+            // Store remaining transactions in to be processed array
+            for (int j = i + 1; j < size; j++) {
+                tobeprocessed[unprocessed_count++] = transactions[j];
+            }
+            break; 
+        }
+    }
+    
+    // Display the final balance
+    printf("\nFinal Balance: %d AED\n", initial_balance);
+    
+    // Display the contents of the to-be-processed array
+    printf("Transactions to be processed later: ");
+    if (unprocessed_count == 0) {
+        printf("None\n");
+    } else {
+        for (int i = 0; i < unprocessed_count; i++) {
+            printf("%d ", tobeprocessed[i]);
+        }
+        printf("\n");
+    }
+    
+    return 0;
+}
