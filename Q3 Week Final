@@ -40,10 +40,6 @@ void enroll_club();
 void add_player();
 void search_update();
 void display_club_statistics();
-void handle_error(const char* message);
-int find_team(const char* clubName);
-int find_player_by_name(team_t* team, const char* playerName);
-int find_player_by_kit(team_t* team, int kitNumber);
 
 // Main function
 int main() {
